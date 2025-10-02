@@ -1,7 +1,7 @@
 [
      {
           "id": 1,
-          "title": "Mackbook PRO 2025",
+          "title": "Mackbook PRO 2026 - Nuevo modelo",
           "description": "Notebook Marca Apple",
           "code": 1001,
           "price": 2500,
@@ -19,6 +19,48 @@
           "description": "Smartphone Marca Apple",
           "code": 2001,
           "price": 700,
+          "status": true,
+          "stock": 10,
+          "category": "Tecnologia",
+          "thumbnails": [
+               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.lider.cl%2Fip%2Fespeciales%2Fmacbook-pro-a2141-i9-16gb-ram-1tb-ssd-reacondicionado-a%2F00071475232226&psig=AOvVaw1utbLq4FDfEQEm83WeaZHR&ust=1759209308964000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJC-osOb_Y8DFQAAAAAdAAAAABAE",
+               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apple.com%2Fnewsroom%2F2019%2F11%2Fapple-introduces-16-inch-macbook-pro-the-worlds-best-pro-notebook%2F&psig=AOvVaw2Gfg3zmv05KrrEjAX3jLNL&ust=1759209341586000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPD3hNGb_Y8DFQAAAAAdAAAAABAL"
+          ]
+     },
+     {
+          "id": 3,
+          "title": "iPhone 16 PRO",
+          "description": "Smartphone Marca Apple",
+          "code": 2002,
+          "price": 900,
+          "status": true,
+          "stock": 10,
+          "category": "Tecnologia",
+          "thumbnails": [
+               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.lider.cl%2Fip%2Fespeciales%2Fmacbook-pro-a2141-i9-16gb-ram-1tb-ssd-reacondicionado-a%2F00071475232226&psig=AOvVaw1utbLq4FDfEQEm83WeaZHR&ust=1759209308964000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJC-osOb_Y8DFQAAAAAdAAAAABAE",
+               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apple.com%2Fnewsroom%2F2019%2F11%2Fapple-introduces-16-inch-macbook-pro-the-worlds-best-pro-notebook%2F&psig=AOvVaw2Gfg3zmv05KrrEjAX3jLNL&ust=1759209341586000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPD3hNGb_Y8DFQAAAAAdAAAAABAL"
+          ]
+     },
+     {
+          "id": 4,
+          "title": "Mackbook PRO 2025 - Actualizado",
+          "description": "Notebook Marca Apple",
+          "code": 2003,
+          "price": 2500,
+          "status": true,
+          "stock": 10,
+          "category": "Tecnologia",
+          "thumbnails": [
+               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.lider.cl%2Fip%2Fespeciales%2Fmacbook-pro-a2141-i9-16gb-ram-1tb-ssd-reacondicionado-a%2F00071475232226&psig=AOvVaw1utbLq4FDfEQEm83WeaZHR&ust=1759209308964000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJC-osOb_Y8DFQAAAAAdAAAAABAE",
+               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apple.com%2Fnewsroom%2F2019%2F11%2Fapple-introduces-16-inch-macbook-pro-the-worlds-best-pro-notebook%2F&psig=AOvVaw2Gfg3zmv05KrrEjAX3jLNL&ust=1759209341586000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPD3hNGb_Y8DFQAAAAAdAAAAABAL"
+          ]
+     },
+     {
+          "id": 6,
+          "title": "iPhone 18 PRO MAX",
+          "description": "Smartphone Marca Apple",
+          "code": 2005,
+          "price": 900,
           "status": true,
           "stock": 10,
           "category": "Tecnologia",
