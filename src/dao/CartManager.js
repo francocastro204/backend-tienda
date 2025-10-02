@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { parseValidId, generateNewId } = require("../utils/validators");
+const { generateNewId } = require("../utils/validators");
 
 class CartManager {
 
@@ -10,7 +10,7 @@ class CartManager {
         // Obtener listado de los carritos.
         let carritos = await this.getCarts();
 
-        // Si pasa todas las validaciones, se debe generar un nuevo ID y crear el carrito.
+        // Generar un nuevo ID y crear el carrito.
         const id = generateNewId(carritos);
 
         const nuevoCarrito = {
@@ -38,18 +38,14 @@ class CartManager {
             }
             return JSON.parse(data);
         } catch (error) {
+            console.error("Error al obtener los carritos:", error.message);
             return [];
         }
     }
 
     static async getCartById(id) {
-        const cartId = parseValidId(id);
-        if (cartId === null) {
-            throw new Error("El ID debe ser un número entero positivo.");
-        }
-
         const carritos = await this.getCarts();
-        const carrito = carritos.find(c => c.id === cartId);
+        const carrito = carritos.find(c => c.id === id);
 
         if (!carrito) {
             throw new Error(`No se encontró el carrito con el ID=${id}.`);
@@ -59,19 +55,9 @@ class CartManager {
     }
 
     static async addProductToCart(cartId, productId) {
-        const parsedCartId = parseValidId(cartId);
-        const parsedProductId = parseValidId(productId);
-
-        if (parsedCartId === null) {
-            throw new Error("El ID del carrito debe ser un número entero positivo.");
-        }
-        if (parsedProductId === null) {
-            throw new Error("El ID del producto debe ser un número entero positivo.");
-        }
-
         // Obtenemos el listado de carritos.
         const carritos = await this.getCarts();
-        const cartIndex = carritos.findIndex(c => c.id === parsedCartId);
+        const cartIndex = carritos.findIndex(c => c.id === cartId);
 
         if (cartIndex === -1) {
             throw new Error(`No se encontró el carrito con el ID=${cartId}.`);
@@ -80,7 +66,7 @@ class CartManager {
         const carrito = carritos[cartIndex];
 
         // Buscar si el producto ya existe en el carrito
-        const existingProductIndex = carrito.products.findIndex(p => p.product === parsedProductId);
+        const existingProductIndex = carrito.products.findIndex(p => p.product === productId);
 
         if (existingProductIndex !== -1) {
             // Si existe, incrementar quantity
@@ -88,7 +74,7 @@ class CartManager {
         } else {
             // Si no existe, agregar nuevo producto con quantity = 1
             carrito.products.push({
-                product: parsedProductId,
+                product: productId,
                 quantity: 1
             });
         }
