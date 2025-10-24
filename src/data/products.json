@@ -9,8 +9,7 @@
           "stock": 10,
           "category": "Tecnologia",
           "thumbnails": [
-               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.lider.cl%2Fip%2Fespeciales%2Fmacbook-pro-a2141-i9-16gb-ram-1tb-ssd-reacondicionado-a%2F00071475232226&psig=AOvVaw1utbLq4FDfEQEm83WeaZHR&ust=1759209308964000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJC-osOb_Y8DFQAAAAAdAAAAABAE",
-               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apple.com%2Fnewsroom%2F2019%2F11%2Fapple-introduces-16-inch-macbook-pro-the-worlds-best-pro-notebook%2F&psig=AOvVaw2Gfg3zmv05KrrEjAX3jLNL&ust=1759209341586000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPD3hNGb_Y8DFQAAAAAdAAAAABAL"
+               "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&h=300&fit=crop"
           ]
      },
      {
@@ -23,22 +22,7 @@
           "stock": 10,
           "category": "Tecnologia",
           "thumbnails": [
-               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.lider.cl%2Fip%2Fespeciales%2Fmacbook-pro-a2141-i9-16gb-ram-1tb-ssd-reacondicionado-a%2F00071475232226&psig=AOvVaw1utbLq4FDfEQEm83WeaZHR&ust=1759209308964000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJC-osOb_Y8DFQAAAAAdAAAAABAE",
-               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apple.com%2Fnewsroom%2F2019%2F11%2Fapple-introduces-16-inch-macbook-pro-the-worlds-best-pro-notebook%2F&psig=AOvVaw2Gfg3zmv05KrrEjAX3jLNL&ust=1759209341586000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPD3hNGb_Y8DFQAAAAAdAAAAABAL"
-          ]
-     },
-     {
-          "id": 4,
-          "title": "Mackbook PRO 2025 - Actualizado",
-          "description": "Notebook Marca Apple",
-          "code": 2003,
-          "price": 2500,
-          "status": true,
-          "stock": 10,
-          "category": "Tecnologia",
-          "thumbnails": [
-               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.lider.cl%2Fip%2Fespeciales%2Fmacbook-pro-a2141-i9-16gb-ram-1tb-ssd-reacondicionado-a%2F00071475232226&psig=AOvVaw1utbLq4FDfEQEm83WeaZHR&ust=1759209308964000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJC-osOb_Y8DFQAAAAAdAAAAABAE",
-               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apple.com%2Fnewsroom%2F2019%2F11%2Fapple-introduces-16-inch-macbook-pro-the-worlds-best-pro-notebook%2F&psig=AOvVaw2Gfg3zmv05KrrEjAX3jLNL&ust=1759209341586000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPD3hNGb_Y8DFQAAAAAdAAAAABAL"
+               "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500&h=300&fit=crop"
           ]
      },
      {
@@ -51,22 +35,31 @@
           "stock": 10,
           "category": "Tecnologia",
           "thumbnails": [
-               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.lider.cl%2Fip%2Fespeciales%2Fmacbook-pro-a2141-i9-16gb-ram-1tb-ssd-reacondicionado-a%2F00071475232226&psig=AOvVaw1utbLq4FDfEQEm83WeaZHR&ust=1759209308964000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJC-osOb_Y8DFQAAAAAdAAAAABAE",
-               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apple.com%2Fnewsroom%2F2019%2F11%2Fapple-introduces-16-inch-macbook-pro-the-worlds-best-pro-notebook%2F&psig=AOvVaw2Gfg3zmv05KrrEjAX3jLNL&ust=1759209341586000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPD3hNGb_Y8DFQAAAAAdAAAAABAL"
+               "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=500&h=300&fit=crop"
           ]
      },
      {
           "id": 7,
-          "title": "Samsung S20 - 2026 - Nuevo modelo",
-          "description": "Smartphone Marca Samsung",
-          "code": "4005",
-          "price": 2000,
-          "status": true,
-          "stock": 100,
+          "title": "Mouse ",
+          "description": "Mouse de macbook",
+          "code": "234123",
+          "price": 100,
+          "stock": 10,
           "category": "Tecnologia",
           "thumbnails": [
-               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.lider.cl%2Fip%2Fespeciales%2Fmacbook-pro-a2141-i9-16gb-ram-1tb-ssd-reacondicionado-a%2F00071475232226&psig=AOvVaw1utbLq4FDfEQEm83WeaZHR&ust=1759209308964000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJC-osOb_Y8DFQAAAAAdAAAAABAE",
-               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apple.com%2Fnewsroom%2F2019%2F11%2Fapple-introduces-16-inch-macbook-pro-the-worlds-best-pro-notebook%2F&psig=AOvVaw2Gfg3zmv05KrrEjAX3jLNL&ust=1759209341586000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPD3hNGb_Y8DFQAAAAAdAAAAABAL"
+               "/uploads/image-1761264080908-10785071.webp"
+          ]
+     },
+     {
+          "id": 8,
+          "title": "Pintura",
+          "description": "Pintura muy famosa",
+          "code": "23423423",
+          "price": 111,
+          "stock": 2222,
+          "category": "Arte",
+          "thumbnails": [
+               "/uploads/image-1761264211375-966656919.jpeg"
           ]
      }
 ]
