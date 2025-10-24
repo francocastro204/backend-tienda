@@ -1,0 +1,37 @@
+<h1>Bienvenido a la tienda online</h1>
+<hr>
+
+<div class="row mt-5">
+    <div class="col-12">
+        {{!-- Listar Productos --}}
+        <h3 class="pb-3">Listado de Productos</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Categoría</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each productos}}
+                    <tr>
+                        <th scope="row">{{id}}</th>
+                        <td><img src="{{#if thumbnails}}{{thumbnails.[0]}}{{/if}}" alt="{{title}}" width="100" class="img-thumbnail rounded"></td>
+                        <td>{{title}}</td>
+                        <td>{{description}}</td>
+                        <td>{{price}}</td>
+                        <td>{{stock}}</td>
+                        <td>{{code}}</td>
+                        <td>{{category}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="mt-5 mb-5">
+    <h1>Bienvenido a Realtime Products</h1>
+    <hr>
+</div>
+<div class="row">
+    <div class="col-6">
+        {{!-- Agregar un Nuevo Producto --}}
+        <section class="add-product">
+            <div>
+                <h3 class="pb-3">Agregar un Nuevo Producto</h3>
+                <form id="form-add-product" enctype="multipart/form-data">
+                    <input class="form-control mb-3" type="text" name="title" placeholder="Título">
+                    <input class="form-control mb-3" type="number" name="price" placeholder="Precio">
+                    <input class="form-control mb-3" type="number" name="stock" placeholder="Stock">
+                    <input class="form-control mb-3" type="text" name="code" placeholder="Código">
+                    <select class="form-select mb-3" name="category">
+                        <option value="" selected>Seleccione una categoría</option>
+                        <option value="Tecnologia">Tecnología</option>
+                        <option value="Arte">Arte</option>
+                        <option value="Ropa">Ropa</option>
+                        <option value="Hogar">Hogar</option>
+                        <option value="Deportes">Deportes</option>
+                    </select>
+                    <input class="form-control mb-3" type="file" name="image" accept="image/*" id="imageInput" placeholder="Seleccionar imagen">
+                    <small class="form-text text-muted mb-3">Formatos permitidos: JPEG, JPG, PNG, GIF, WEBP. Tamaño máximo: 5MB</small>
+                    <div id="imagePreview" class="mb-3" style="display: none;">
+                        <img id="previewImg" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px;">
+                    </div>
+                    <textarea class="form-control mb-3" id="exampleFormControlTextarea1" rows="3" name="description" placeholder="Descripción"></textarea>
+                    <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                </form>
+            </div>
+        </section>
+    </div>
+    <div class="col-6">
+        {{!-- Eliminar un Producto --}}
+        <section class="add-product">
+            <div>
+                <h3 class="pb-3">Eliminar un Producto por ID</h3>
+                <form class="row g-3" id="form-delete-product">
+                    <div class="col-auto">
+                        <input class="form-control mb-3" type="number" name="productId" placeholder="Agregar el ID del Producto a eliminar">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-danger">Eliminar Producto</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        {{!-- Listar Productos --}}
+        <h3 class="pb-3">Listado de Productos</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Categoría</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each productos}}
+                    <tr>
+                        <th scope="row">{{id}}</th>
+                        <td><img src="{{#if thumbnails}}{{thumbnails.[0]}}{{/if}}" alt="{{title}}" width="100" class="img-thumbnail rounded"></td>
+                        <td>{{title}}</td>
+                        <td>{{description}}</td>
+                        <td>{{price}}</td>
+                        <td>{{stock}}</td>
+                        <td>{{code}}</td>
+                        <td>{{category}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
