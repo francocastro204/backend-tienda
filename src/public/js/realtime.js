@@ -1,6 +1,10 @@
 // Conectar con Socket.io
 const socket = io();
 
+// Variables globales
+let userName = '';
+let connectedUsersCount = 0;
+
 // Elementos del DOM
 const formAddProduct = document.getElementById("form-add-product");
 const formDeleteProduct = document.getElementById("form-delete-product");
@@ -8,6 +12,61 @@ const productsTable = document.querySelector("tbody");
 const imageInput = document.getElementById("imageInput");
 const imagePreview = document.getElementById("imagePreview");
 const previewImg = document.getElementById("previewImg");
+const userInfo = document.getElementById("userInfo");
+const userNameElement = document.getElementById("userName");
+const connectedUsersElement = document.getElementById("connectedUsers");
+
+// Función para pedir nombre del usuario
+function askUserName() {
+    return new Promise((resolve) => {
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.innerHTML = `
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">¡Bienvenido!</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Por favor, ingresa tu nombre para continuar:</p>
+                        <input type="text" class="form-control" id="userNameInput" placeholder="Tu nombre" maxlength="20">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="confirmName">Continuar</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+        
+        const userNameInput = document.getElementById('userNameInput');
+        const confirmBtn = document.getElementById('confirmName');
+        
+        confirmBtn.addEventListener('click', () => {
+            const name = userNameInput.value.trim();
+            if (name) {
+                userName = name;
+                bootstrapModal.hide();
+                modal.remove();
+                resolve(name);
+            } else {
+                showMessage('Por favor ingresa un nombre válido', 'error');
+            }
+        });
+        
+        userNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                confirmBtn.click();
+            }
+        });
+        
+        userNameInput.focus();
+    });
+}
 
 // Preview de imagen
 imageInput.addEventListener("change", (e) => {
@@ -181,12 +240,54 @@ function showMessage(message, type) {
 }
 
 // Mostrar mensaje de conexión
-socket.on("connect", () => {
+socket.on("connect", async () => {
     console.log("Conectado al servidor WebSocket");
+    
+    // Solo pedir nombre si estamos en la página de realTimeProducts
+    if (window.location.pathname === '/realtimeproducts') {
+        try {
+            await askUserName();
+            showUserInfo();
+            socket.emit('userJoined', userName);
+        } catch (error) {
+            console.error('Error al obtener nombre:', error);
+        }
+    }
+    
     showMessage("🟢 Conectado en tiempo real!", "success");
 });
 
 socket.on("disconnect", () => {
     console.log("Desconectado del servidor WebSocket");
     showMessage("🔴 Desconectado del servidor", "warning");
+});
+
+// Escuchar actualización de usuarios conectados
+socket.on('usersCount', (count) => {
+    connectedUsersCount = count;
+    if (connectedUsersElement) {
+        connectedUsersElement.textContent = `Usuarios conectados: ${count}`;
+    }
+});
+
+// Función para mostrar información del usuario
+function showUserInfo() {
+    if (userInfo && userNameElement) {
+        userNameElement.textContent = `Usuario conectado: ${userName}`;
+        userInfo.style.display = 'block';
+    }
+}
+
+// Función para ocultar información del usuario
+function hideUserInfo() {
+    if (userInfo) {
+        userInfo.style.display = 'none';
+    }
+}
+
+// Verificar la página actual al cargar
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.pathname === '/') {
+        hideUserInfo();
+    }
 });

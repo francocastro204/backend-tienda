@@ -8,11 +8,18 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand" href="/">Tienda Online</a>
-            <div class="navbar-nav">
+            <div class="navbar-nav mx-auto">
                 <a class="nav-link" href="/">Home</a>
                 <a class="nav-link" href="/realtimeproducts">Real Time Products</a>
+                <a class="nav-link" href="/chat">Chat</a>
+            </div>
+            <div id="userInfo" class="navbar-nav ms-auto" style="display: none;">
+                <div class="nav-item">
+                    <span class="nav-link text-light" id="userName">Usuario conectado: </span>
+                    <small class="nav-link text-light" id="connectedUsers">Usuarios conectados: 0</small>
+                </div>
             </div>
         </div>
     </nav>
@@ -22,5 +29,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/realtime.js"></script>
+    <script src="/js/chat.js"></script>
 </body>
 </html>

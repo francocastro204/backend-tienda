@@ -1,0 +1,299 @@
+{
+  "logs": [
+    {
+      "id": "17612778538447wp0ekzh7",
+      "timestamp": "2025-10-24T03:50:53.844Z",
+      "timestampReadable": "24/10/2025, 0:50:53",
+      "type": "connection",
+      "message": "Cliente conectado: ddwB_fADH9Cwlt_UAAAB",
+      "data": {
+        "socketId": "ddwB_fADH9Cwlt_UAAAB"
+      }
+    },
+    {
+      "id": "176127785612194rlroag3",
+      "timestamp": "2025-10-24T03:50:56.121Z",
+      "timestampReadable": "24/10/2025, 0:50:56",
+      "type": "connection",
+      "message": "Cliente conectado: PeBvySL24Ez_25ReAAAD",
+      "data": {
+        "socketId": "PeBvySL24Ez_25ReAAAD"
+      }
+    },
+    {
+      "id": "1761277856203lvut7ityz",
+      "timestamp": "2025-10-24T03:50:56.203Z",
+      "timestampReadable": "24/10/2025, 0:50:56",
+      "type": "connection",
+      "message": "Cliente conectado: 8NX4Q3eA4ihd7tyaAAAF",
+      "data": {
+        "socketId": "8NX4Q3eA4ihd7tyaAAAF"
+      }
+    },
+    {
+      "id": "1761277857118z8ejhl35r",
+      "timestamp": "2025-10-24T03:50:57.118Z",
+      "timestampReadable": "24/10/2025, 0:50:57",
+      "type": "connection",
+      "message": "Cliente conectado: SBRYnQC0FWs7ApVgAAAH",
+      "data": {
+        "socketId": "SBRYnQC0FWs7ApVgAAAH"
+      }
+    },
+    {
+      "id": "1761277868641pgzqrd7av",
+      "timestamp": "2025-10-24T03:51:08.641Z",
+      "timestampReadable": "24/10/2025, 0:51:08",
+      "type": "disconnection",
+      "message": "Cliente desconectado: ddwB_fADH9Cwlt_UAAAB",
+      "data": {
+        "socketId": "ddwB_fADH9Cwlt_UAAAB"
+      }
+    },
+    {
+      "id": "1761277868752ag35qqmz0",
+      "timestamp": "2025-10-24T03:51:08.752Z",
+      "timestampReadable": "24/10/2025, 0:51:08",
+      "type": "connection",
+      "message": "Cliente conectado: HkGA9fYCXKE4l3j1AAAJ",
+      "data": {
+        "socketId": "HkGA9fYCXKE4l3j1AAAJ"
+      }
+    },
+    {
+      "id": "1761277872614n3zo0kfaw",
+      "timestamp": "2025-10-24T03:51:12.614Z",
+      "timestampReadable": "24/10/2025, 0:51:12",
+      "type": "disconnection",
+      "message": "Cliente desconectado: HkGA9fYCXKE4l3j1AAAJ",
+      "data": {
+        "socketId": "HkGA9fYCXKE4l3j1AAAJ"
+      }
+    },
+    {
+      "id": "1761277872658kb7cpy86j",
+      "timestamp": "2025-10-24T03:51:12.658Z",
+      "timestampReadable": "24/10/2025, 0:51:12",
+      "type": "connection",
+      "message": "Cliente conectado: 4VT5O_yeMlx_37-EAAAL",
+      "data": {
+        "socketId": "4VT5O_yeMlx_37-EAAAL"
+      }
+    },
+    {
+      "id": "17612778766796kzku09r8",
+      "timestamp": "2025-10-24T03:51:16.679Z",
+      "timestampReadable": "24/10/2025, 0:51:16",
+      "type": "user_joined",
+      "message": "Usuario Franco se unió",
+      "data": {
+        "userName": "Franco"
+      }
+    },
+    {
+      "id": "176127787950495vc6ia5w",
+      "timestamp": "2025-10-24T03:51:19.504Z",
+      "timestampReadable": "24/10/2025, 0:51:19",
+      "type": "disconnection",
+      "message": "Cliente desconectado: 4VT5O_yeMlx_37-EAAAL",
+      "data": {
+        "socketId": "4VT5O_yeMlx_37-EAAAL"
+      }
+    },
+    {
+      "id": "17612778795671cttnjfph",
+      "timestamp": "2025-10-24T03:51:19.567Z",
+      "timestampReadable": "24/10/2025, 0:51:19",
+      "type": "connection",
+      "message": "Cliente conectado: YJRQqMW8foFjitayAAAN",
+      "data": {
+        "socketId": "YJRQqMW8foFjitayAAAN"
+      }
+    },
+    {
+      "id": "176127788476984qw06jna",
+      "timestamp": "2025-10-24T03:51:24.769Z",
+      "timestampReadable": "24/10/2025, 0:51:24",
+      "type": "disconnection",
+      "message": "Cliente desconectado: YJRQqMW8foFjitayAAAN",
+      "data": {
+        "socketId": "YJRQqMW8foFjitayAAAN"
+      }
+    },
+    {
+      "id": "1761277884817enlegvkrz",
+      "timestamp": "2025-10-24T03:51:24.817Z",
+      "timestampReadable": "24/10/2025, 0:51:24",
+      "type": "connection",
+      "message": "Cliente conectado: OV3t4CCzEdZ3HUTCAAAP",
+      "data": {
+        "socketId": "OV3t4CCzEdZ3HUTCAAAP"
+      }
+    },
+    {
+      "id": "1761277897541b9fpn0s94",
+      "timestamp": "2025-10-24T03:51:37.541Z",
+      "timestampReadable": "24/10/2025, 0:51:37",
+      "type": "disconnection",
+      "message": "Cliente desconectado: 8NX4Q3eA4ihd7tyaAAAF",
+      "data": {
+        "socketId": "8NX4Q3eA4ihd7tyaAAAF"
+      }
+    },
+    {
+      "id": "1761277897616pangfn18g",
+      "timestamp": "2025-10-24T03:51:37.616Z",
+      "timestampReadable": "24/10/2025, 0:51:37",
+      "type": "connection",
+      "message": "Cliente conectado: 5CTBaVg9FT8upJx5AAAR",
+      "data": {
+        "socketId": "5CTBaVg9FT8upJx5AAAR"
+      }
+    },
+    {
+      "id": "1761277904102ozczhh2ys",
+      "timestamp": "2025-10-24T03:51:44.102Z",
+      "timestampReadable": "24/10/2025, 0:51:44",
+      "type": "disconnection",
+      "message": "Cliente desconectado: 5CTBaVg9FT8upJx5AAAR",
+      "data": {
+        "socketId": "5CTBaVg9FT8upJx5AAAR"
+      }
+    },
+    {
+      "id": "1761277904141o5eercsqo",
+      "timestamp": "2025-10-24T03:51:44.141Z",
+      "timestampReadable": "24/10/2025, 0:51:44",
+      "type": "connection",
+      "message": "Cliente conectado: Csg-seXLFHR4yj7aAAAT",
+      "data": {
+        "socketId": "Csg-seXLFHR4yj7aAAAT"
+      }
+    },
+    {
+      "id": "1761277918138518skpa79",
+      "timestamp": "2025-10-24T03:51:58.138Z",
+      "timestampReadable": "24/10/2025, 0:51:58",
+      "type": "disconnection",
+      "message": "Cliente desconectado: OV3t4CCzEdZ3HUTCAAAP",
+      "data": {
+        "socketId": "OV3t4CCzEdZ3HUTCAAAP"
+      }
+    },
+    {
+      "id": "1761277918186lmfq2rs2v",
+      "timestamp": "2025-10-24T03:51:58.186Z",
+      "timestampReadable": "24/10/2025, 0:51:58",
+      "type": "connection",
+      "message": "Cliente conectado: dGEvI23K0K15VuiXAAAV",
+      "data": {
+        "socketId": "dGEvI23K0K15VuiXAAAV"
+      }
+    },
+    {
+      "id": "17617939137809uzt3xtjl",
+      "timestamp": "2025-10-30T03:11:53.780Z",
+      "timestampReadable": "30/10/2025, 0:11:53",
+      "type": "connection",
+      "message": "Cliente conectado: 16EuXNukVR_n_asRAAAB",
+      "data": {
+        "socketId": "16EuXNukVR_n_asRAAAB"
+      }
+    },
+    {
+      "id": "1761793917140mfo7v714j",
+      "timestamp": "2025-10-30T03:11:57.140Z",
+      "timestampReadable": "30/10/2025, 0:11:57",
+      "type": "disconnection",
+      "message": "Cliente desconectado: 16EuXNukVR_n_asRAAAB",
+      "data": {
+        "socketId": "16EuXNukVR_n_asRAAAB"
+      }
+    },
+    {
+      "id": "1761793917205am226fjtx",
+      "timestamp": "2025-10-30T03:11:57.205Z",
+      "timestampReadable": "30/10/2025, 0:11:57",
+      "type": "connection",
+      "message": "Cliente conectado: DZbb6PRUawm8-WbxAAAD",
+      "data": {
+        "socketId": "DZbb6PRUawm8-WbxAAAD"
+      }
+    },
+    {
+      "id": "1761793921072doco0ylh8",
+      "timestamp": "2025-10-30T03:12:01.072Z",
+      "timestampReadable": "30/10/2025, 0:12:01",
+      "type": "disconnection",
+      "message": "Cliente desconectado: DZbb6PRUawm8-WbxAAAD",
+      "data": {
+        "socketId": "DZbb6PRUawm8-WbxAAAD"
+      }
+    },
+    {
+      "id": "1761793921139z24f1ne6y",
+      "timestamp": "2025-10-30T03:12:01.139Z",
+      "timestampReadable": "30/10/2025, 0:12:01",
+      "type": "connection",
+      "message": "Cliente conectado: y_CdVcSgGRVahU4KAAAF",
+      "data": {
+        "socketId": "y_CdVcSgGRVahU4KAAAF"
+      }
+    },
+    {
+      "id": "17617939298641ehtxa3wd",
+      "timestamp": "2025-10-30T03:12:09.864Z",
+      "timestampReadable": "30/10/2025, 0:12:09",
+      "type": "connection",
+      "message": "Cliente conectado: 4kggg-77L97FRiKTAAAH",
+      "data": {
+        "socketId": "4kggg-77L97FRiKTAAAH"
+      }
+    },
+    {
+      "id": "1761793931886i11r7ybv2",
+      "timestamp": "2025-10-30T03:12:11.886Z",
+      "timestampReadable": "30/10/2025, 0:12:11",
+      "type": "disconnection",
+      "message": "Cliente desconectado: 4kggg-77L97FRiKTAAAH",
+      "data": {
+        "socketId": "4kggg-77L97FRiKTAAAH"
+      }
+    },
+    {
+      "id": "1761793931934xqny6uwhn",
+      "timestamp": "2025-10-30T03:12:11.934Z",
+      "timestampReadable": "30/10/2025, 0:12:11",
+      "type": "connection",
+      "message": "Cliente conectado: XDBuG0RzsmTQqMcXAAAJ",
+      "data": {
+        "socketId": "XDBuG0RzsmTQqMcXAAAJ"
+      }
+    },
+    {
+      "id": "17617939376636ysno3ifs",
+      "timestamp": "2025-10-30T03:12:17.663Z",
+      "timestampReadable": "30/10/2025, 0:12:17",
+      "type": "disconnection",
+      "message": "Cliente desconectado: XDBuG0RzsmTQqMcXAAAJ",
+      "data": {
+        "socketId": "XDBuG0RzsmTQqMcXAAAJ"
+      }
+    },
+    {
+      "id": "1761793937698bgvn11va7",
+      "timestamp": "2025-10-30T03:12:17.698Z",
+      "timestampReadable": "30/10/2025, 0:12:17",
+      "type": "connection",
+      "message": "Cliente conectado: JKJuIc_WS9oXikCJAAAL",
+      "data": {
+        "socketId": "JKJuIc_WS9oXikCJAAAL"
+      }
+    }
+  ],
+  "metadata": {
+    "created": "2024-12-25T14:30:00.000Z",
+    "lastUpdated": "2025-10-30T03:12:17.704Z",
+    "totalLogs": 29
+  }
+}
