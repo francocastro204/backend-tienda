@@ -1,0 +1,189 @@
+<h1>Detalle del Producto</h1>
+<hr>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            {{#if producto.thumbnails}}
+            <img src="{{producto.thumbnails.[0]}}" class="img-fluid" alt="{{producto.title}}">
+            {{else}}
+            <img src="https://via.placeholder.com/400" class="img-fluid" alt="{{producto.title}}">
+            {{/if}}
+        </div>
+        <div class="col-md-6">
+            <h2>{{producto.title}}</h2>
+            <p class="h3 text-primary">${{producto.price}}</p>
+
+            <div class="mb-3">
+                <span class="badge rounded-pill text-bg-info">{{producto.category}}</span>
+                {{#if producto.brand}}
+                <span class="badge rounded-pill text-bg-secondary">{{producto.brand}}</span>
+                {{/if}}
+            </div>
+
+            <div class="mb-3">
+                <h5>Descripción:</h5>
+                <p>{{producto.description}}</p>
+            </div>
+
+            <div class="mb-3">
+                <p><strong>Stock disponible:</strong> {{producto.stock}} unidades</p>
+                <p><strong>Estado:</strong>
+                    {{#if producto.status}}
+                    <span class="text-success">Disponible</span>
+                    {{else}}
+                    <span class="text-danger">No disponible</span>
+                    {{/if}}
+                </p>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-primary btn-lg" onclick="agregarAlCarrito('{{producto._id}}')">
+                    Agregar al carrito
+                </button>
+                <a href="/" class="btn btn-secondary btn-lg">Volver al listado</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function agregarAlCarrito(productId) {
+        try {
+            const response = await fetch('/api/carts');
+            const data = await response.json();
+
+            if (data.success && data.data.length > 0) {
+                mostrarModalCarritos(productId, data.data);
+            } else {
+                await crearYAgregar(productId);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarToast('Error al verificar carritos', 'error');
+        }
+    }
+
+    async function crearYAgregar(productId, title = null) {
+        try {
+            const response = await fetch('/api/carts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title })
+            });
+            const data = await response.json();
+            if (data.success) {
+                const cartId = data.data._id;
+                await agregarProductoACarrito(cartId, productId);
+            } else {
+                mostrarToast('Error al crear carrito: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarToast('Error al crear carrito', 'error');
+        }
+    }
+
+    async function agregarProductoACarrito(cartId, productId) {
+        try {
+            const response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                mostrarToast('Producto agregado al carrito', 'success');
+                setTimeout(() => {
+                    if (confirm('¿Deseas ver tu carrito?')) {
+                        window.location.href = `/carts/${cartId}`;
+                    }
+                }, 500);
+            } else {
+                mostrarToast('Error: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarToast('Error al agregar producto al carrito', 'error');
+        }
+    }
+
+    function mostrarModalCarritos(productId, carritos) {
+        const modalHTML = `
+            <div class="modal fade" id="modalCarritos" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Seleccionar Carrito</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Selecciona un carrito:</label>
+                                <div id="carritosList">
+                                    ${carritos.map(cart => `
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="cartSelect" id="cart${cart._id}" value="${cart._id}">
+                                            <label class="form-check-label" for="cart${cart._id}">
+                                                ${cart.title} (${cart.products.length} productos)
+                                            </label>
+                                        </div>
+                                    `).join('')}
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="cartSelect" id="cartNuevo" value="nuevo">
+                                        <label class="form-check-label" for="cartNuevo">
+                                            Crear nuevo carrito
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="nuevoCarritoDiv" style="display: none;">
+                                <label class="form-label">Nombre del carrito:</label>
+                                <input type="text" class="form-control" id="nuevoCarritoTitle" placeholder="Ej: Carrito de cumpleaños">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="confirmarAgregar('${productId}')">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const modalAnterior = document.getElementById('modalCarritos');
+        if (modalAnterior) {
+            modalAnterior.remove();
+        }
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        const modal = new bootstrap.Modal(document.getElementById('modalCarritos'));
+        modal.show();
+
+        document.getElementById('cartNuevo').addEventListener('change', function () {
+            document.getElementById('nuevoCarritoDiv').style.display = this.checked ? 'block' : 'none';
+        });
+    }
+
+    window.confirmarAgregar = async function (productId) {
+        const selected = document.querySelector('input[name="cartSelect"]:checked');
+        if (!selected) {
+            mostrarToast('Por favor selecciona un carrito', 'warning');
+            return;
+        }
+
+        if (selected.value === 'nuevo') {
+            const title = document.getElementById('nuevoCarritoTitle').value || null;
+            await crearYAgregar(productId, title);
+        } else {
+            await agregarProductoACarrito(selected.value, productId);
+        }
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalCarritos'));
+        modal.hide();
+    };
+</script>

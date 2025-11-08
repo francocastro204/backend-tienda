@@ -27,6 +27,12 @@
                         <img id="previewImg" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px;">
                     </div>
                     <textarea class="form-control mb-3" id="exampleFormControlTextarea1" rows="3" name="description" placeholder="Descripción"></textarea>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="status" id="statusCheck" checked>
+                        <label class="form-check-label" for="statusCheck">
+                            Producto disponible
+                        </label>
+                    </div>
                     <button type="submit" class="btn btn-primary">Agregar Producto</button>
                 </form>
             </div>
@@ -39,7 +45,7 @@
                 <h3 class="pb-3">Eliminar un Producto por ID</h3>
                 <form class="row g-3" id="form-delete-product">
                     <div class="col-auto">
-                        <input class="form-control mb-3" type="number" name="productId" placeholder="Agregar el ID del Producto a eliminar">
+                        <input class="form-control mb-3" type="text" name="productId" placeholder="Ingresa el ID del producto (ObjectId)">
                     </div>
                     <div class="col-auto">
                         <button type="submit" class="btn btn-danger">Eliminar Producto</button>
@@ -70,11 +76,11 @@
             <tbody>
                 {{#each productos}}
                     <tr>
-                        <th scope="row">{{id}}</th>
+                        <th scope="row"><small>{{_id}}</small></th>
                         <td><img src="{{#if thumbnails}}{{thumbnails.[0]}}{{/if}}" alt="{{title}}" width="100" class="img-thumbnail rounded"></td>
                         <td>{{title}}</td>
                         <td>{{description}}</td>
-                        <td>{{price}}</td>
+                        <td>${{price}}</td>
                         <td>{{stock}}</td>
                         <td>{{code}}</td>
                         <td>{{category}}</td>
@@ -85,5 +91,31 @@
     </div>
 </div>
 
+{{!-- Paginación --}}
+<div class="row justify-content-center align-content-center pt-3">
+    <div class="col-left">
+        <small class="pb-3">Total de productos: {{totalDocs}}</small>
+    </div>
+    <div class="col-auto">
+        <nav aria-label="Page navigation example mt-4 mx-auto text-center">
+            <ul class="pagination">
+                {{#if hasPrevPage}}
+                <li class="page-item">
+                    <a class="page-link" href="/realtimeproducts?page={{prevPage}}&limit={{limit}}">Página Anterior</a>
+                </li>
+                {{/if}}
 
+                <li class="page-item active">
+                    <a class="page-link" href="#">{{page}} de {{totalPages}}</a>
+                </li>
+
+                {{#if hasNextPage}}
+                <li class="page-item">
+                    <a class="page-link" href="/realtimeproducts?page={{nextPage}}&limit={{limit}}">Página Siguiente</a>
+                </li>
+                {{/if}}
+            </ul>
+        </nav>
+    </div>
+</div>
 

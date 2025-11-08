@@ -1,0 +1,30 @@
+<h1>Mis Carritos</h1>
+<hr>
+
+<div class="container">
+    {{#if carritos.length}}
+        <div class="row">
+            {{#each carritos}}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.title}}</h5>
+                            <p class="card-text">
+                                <strong>Productos:</strong> {{this.products.length}}<br>
+                                <strong>ID:</strong> <small class="text-muted">{{this._id}}</small>
+                            </p>
+                            <a href="/carts/{{this._id}}" class="btn btn-primary">Ver Carrito</a>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="alert alert-info text-center">
+            <h4>No tienes carritos</h4>
+            <p>Agrega productos desde el listado para crear tu primer carrito.</p>
+            <a href="/" class="btn btn-primary">Ver Productos</a>
+        </div>
+    {{/if}}
+</div>
+

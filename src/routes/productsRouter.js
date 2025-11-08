@@ -1,20 +1,80 @@
-const { Router } = require("express");
-const { ProductManager } = require("../dao/ProductManager");
-const { isValidId, parseValidId, validateProductFields, normalizeProductData } = require("../utils/validators");
+import { Router } from "express";
+import mongoose from "mongoose";
+import { ProductManager } from "../dao/ProductManager.js";
+import {
+    validateProductFields,
+    normalizeProductData,
+    buildSortObject,
+    sendJsonSuccess,
+    sendJsonError,
+} from "../utils/validators.js";
 
 const router = Router();
 
 // GET / - Listar productos
 router.get("/", async (req, res) => {
+    let { page, limit, sort, query } = req.query;
+    if (!page) page = 1;
+    if (!limit) limit = 10;
+
+    let filterQuery = {};
+    if (query) {
+        const [key, value] = query.split(":");
+        if (key === "category") {
+            filterQuery.category = value;
+        } else if (key === "status") {
+            filterQuery.status = value === "true";
+        }
+    }
+
+    const sortObj = buildSortObject(sort);
+
     try {
-        const productos = await ProductManager.getProducts();
-        console.log(`GET /api/products - ${productos.length} productos encontrados`);
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json({ success: true, data: productos });
+        const resProducts = await ProductManager.getProducts(
+            page,
+            limit,
+            filterQuery,
+            sortObj
+        );
+
+        const baseUrl = "/api/products";
+        let prevLink = null;
+        let nextLink = null;
+
+        if (resProducts.hasPrevPage) {
+            let prevParams = `page=${resProducts.prevPage}&limit=${limit}`;
+            if (sort) prevParams += `&sort=${sort}`;
+            if (query) prevParams += `&query=${query}`;
+            prevLink = `${baseUrl}?${prevParams}`;
+        }
+
+        if (resProducts.hasNextPage) {
+            let nextParams = `page=${resProducts.nextPage}&limit=${limit}`;
+            if (sort) nextParams += `&sort=${sort}`;
+            if (query) nextParams += `&query=${query}`;
+            nextLink = `${baseUrl}?${nextParams}`;
+        }
+
+        res.setHeader("Content-Type", "application/json");
+        res.status(200).json({
+            status: "success",
+            payload: resProducts.docs,
+            totalPages: resProducts.totalPages,
+            prevPage: resProducts.prevPage || null,
+            nextPage: resProducts.nextPage || null,
+            page: resProducts.page,
+            hasPrevPage: resProducts.hasPrevPage,
+            hasNextPage: resProducts.hasNextPage,
+            prevLink: prevLink,
+            nextLink: nextLink,
+        });
     } catch (error) {
-        console.log(`Error al obtener los productos.\nError: ${error.message}`);
-        res.setHeader('Content-Type', 'application/json');
-        res.status(500).json({ success: false, error: error.message });
+        console.error(`Error al obtener los productos.\nError: ${error.message}`);
+        res.setHeader("Content-Type", "application/json");
+        res.status(500).json({
+            status: "error",
+            error: error.message
+        });
     }
 });
 
@@ -23,27 +83,19 @@ router.post("/", async (req, res) => {
     try {
         const nuevoProducto = req.body;
 
-        // Validaciones usando la función centralizada
         const validationErrors = validateProductFields(nuevoProducto, false);
         if (validationErrors.length > 0) {
-            res.setHeader('Content-Type', 'application/json');
-            return res.status(400).json({
-                success: false,
-                error: validationErrors[0] // Retorna el primer error encontrado
-            });
+            return sendJsonError(res, 400, validationErrors[0]);
         }
-        // Normalización de datos usando la función centralizada
-        const productoNormalizado = normalizeProductData(nuevoProducto);
 
-        const producto = await ProductManager.addProduct(productoNormalizado);
-        console.log(`POST /api/products - Producto creado: ${producto.title} (ID: ${producto.id})`);
-        res.setHeader('Content-Type', 'application/json');
-        res.status(201).json({ success: true, data: producto, message: "Producto creado correctamente" });
+        const productoNormalizado = normalizeProductData(nuevoProducto);
+        const producto = await ProductManager.createProduct(productoNormalizado);
+
+        sendJsonSuccess(res, 201, producto, "Producto creado correctamente");
     } catch (error) {
         console.error("Error al crear producto:", error.message);
         const statusCode = error.message.includes("Ya existe") ? 409 : 500;
-        res.setHeader('Content-Type', 'application/json');
-        res.status(statusCode).json({ success: false, error: error.message });
+        sendJsonError(res, statusCode, error.message);
     }
 });
 
@@ -51,21 +103,21 @@ router.post("/", async (req, res) => {
 router.get("/:pid", async (req, res) => {
     try {
         const { pid } = req.params;
-        if (!isValidId(pid)) {
-            res.setHeader('Content-Type', 'application/json');
-            return res.status(400).json({ success: false, error: "ID debe ser un número entero positivo" });
+
+        if (!mongoose.Types.ObjectId.isValid(pid)) {
+            return sendJsonError(res, 400, "ID inválido");
         }
 
-        const productId = parseValidId(pid);
-        const producto = await ProductManager.getProductById(productId);
-        console.log(`GET /api/products/${pid} - Producto encontrado: ${producto.title}`);
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json({ success: true, data: producto });
+        const producto = await ProductManager.getProductById(pid);
+
+        if (!producto) {
+            return sendJsonError(res, 404, "Producto no encontrado");
+        }
+
+        sendJsonSuccess(res, 200, producto);
     } catch (error) {
         console.error(`Error al obtener producto ${req.params.pid}:`, error.message);
-        const statusCode = error.message.includes("No se encontró") ? 404 : 500;
-        res.setHeader('Content-Type', 'application/json');
-        res.status(statusCode).json({ success: false, error: error.message });
+        sendJsonError(res, 500, error.message);
     }
 });
 
@@ -73,36 +125,28 @@ router.get("/:pid", async (req, res) => {
 router.put("/:pid", async (req, res) => {
     try {
         const { pid } = req.params;
-        if (!isValidId(pid)) {
-            res.setHeader('Content-Type', 'application/json');
-            return res.status(400).json({ success: false, error: "ID debe ser un número entero positivo" });
+
+        if (!mongoose.Types.ObjectId.isValid(pid)) {
+            return sendJsonError(res, 400, "ID inválido");
         }
 
-        const productId = parseValidId(pid);
         const actualizarProducto = req.body;
-
-        // Validaciones usando la función centralizada para updates
         const validationErrors = validateProductFields(actualizarProducto, true);
         if (validationErrors.length > 0) {
-            res.setHeader('Content-Type', 'application/json');
-            return res.status(400).json({
-                success: false,
-                error: validationErrors[0] // Retorna el primer error encontrado
-            });
+            return sendJsonError(res, 400, validationErrors[0]);
         }
 
-        // Normalización de datos usando la función centralizada
         const cambiosNormalizados = normalizeProductData(actualizarProducto);
+        const producto = await ProductManager.update(pid, cambiosNormalizados);
 
-        const producto = await ProductManager.updateProduct(productId, cambiosNormalizados);
-        console.log(`PUT /api/products/${pid} - Producto actualizado: ${producto.title}`);
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json({ success: true, data: producto, message: "Producto actualizado correctamente" });
+        if (!producto) {
+            return sendJsonError(res, 404, "Producto no encontrado");
+        }
+
+        sendJsonSuccess(res, 200, producto, "Producto actualizado correctamente");
     } catch (error) {
         console.error(`Error al actualizar producto ${req.params.pid}:`, error.message);
-        const statusCode = error.message.includes("No se encontró") ? 404 : 500;
-        res.setHeader('Content-Type', 'application/json');
-        res.status(statusCode).json({ success: false, error: error.message });
+        sendJsonError(res, 500, error.message);
     }
 });
 
@@ -110,23 +154,22 @@ router.put("/:pid", async (req, res) => {
 router.delete("/:pid", async (req, res) => {
     try {
         const { pid } = req.params;
-        if (!isValidId(pid)) {
-            res.setHeader('Content-Type', 'application/json');
-            return res.status(400).json({ success: false, error: "ID debe ser un número entero positivo" });
+
+        if (!mongoose.Types.ObjectId.isValid(pid)) {
+            return sendJsonError(res, 400, "ID inválido");
         }
 
-        const productId = parseValidId(pid);
-        const producto = await ProductManager.deleteProduct(productId);
-        console.log(`DELETE /api/products/${pid} - Producto eliminado: ${producto.title}`);
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json({ success: true, message: 'Producto eliminado correctamente', data: producto });
+        const producto = await ProductManager.delete(pid);
+
+        if (!producto) {
+            return sendJsonError(res, 404, "Producto no encontrado");
+        }
+
+        sendJsonSuccess(res, 200, producto, "Producto eliminado correctamente");
     } catch (error) {
         console.error(`Error al eliminar producto ${req.params.pid}:`, error.message);
-        res.setHeader('Content-Type', 'application/json');
-        res.status(500).json({ success: false, error: error.message });
+        sendJsonError(res, 500, error.message);
     }
 });
 
-module.exports = router;
-
-
+export default router;

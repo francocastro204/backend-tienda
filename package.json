@@ -1,20 +1,21 @@
 {
   "name": "backend-tienda",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
+  "author": "Franco Castro Miranda",
+  "description": "Backend en Node.JS para una tienda online",
+  "license": "ISC",
   "scripts": {
     "start": "node ./src/app.js",
     "dev": "node --watch ./src/app.js",
-    "prueba": "echo PRUEBA...!!!",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "express": "^5.1.0",
     "express-handlebars": "^8.0.3",
+    "mongoose": "^8.19.2",
+    "mongoose-paginate-v2": "^1.9.1",
     "multer": "^2.0.2",
     "socket.io": "^4.8.1"
   }

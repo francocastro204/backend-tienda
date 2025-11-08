@@ -1,0 +1,152 @@
+<h1>{{carrito.title}}</h1>
+<hr>
+
+<div class="container">
+    {{#if carrito.products.length}}
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Producto</th>
+                        <th>Precio Unitario</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each carrito.products}}
+                    <tr>
+                        <td>
+                            {{#if this.product.thumbnails}}
+                            <img src="{{this.product.thumbnails.[0]}}" alt="{{this.product.title}}"
+                                style="width: 50px; height: 50px; object-fit: cover;">
+                            {{else}}
+                            <img src="https://via.placeholder.com/50" alt="Sin imagen"
+                                style="width: 50px; height: 50px;">
+                            {{/if}}
+                        </td>
+                        <td>
+                            <strong>{{this.product.title}}</strong><br>
+                            <small class="text-muted">{{this.product.category}}</small>
+                        </td>
+                        <td>${{this.product.price}}</td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm" value="{{this.quantity}}" min="1"
+                                style="width: 80px;" onchange="actualizarCantidad('{{this.product._id}}', this.value)">
+                        </td>
+                        <td>${{this.subtotal}}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="eliminarProducto('{{this.product._id}}')">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                        <td><strong>${{total}}</strong></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12 text-end">
+            <button class="btn btn-danger" onclick="vaciarCarrito()">Vaciar Carrito</button>
+            <a href="/carts" class="btn btn-info">Ver Todos los Carritos</a>
+            <a href="/" class="btn btn-secondary">Seguir Comprando</a>
+        </div>
+    </div>
+    {{else}}
+    <div class="alert alert-info text-center">
+        <h4>Tu carrito está vacío</h4>
+        <p>Agrega productos desde el listado para comenzar a comprar.</p>
+        <a href="/" class="btn btn-primary">Ver Productos</a>
+    </div>
+    {{/if}}
+</div>
+
+<script>
+    const cartId = '{{carrito._id}}';
+
+    function actualizarCantidad(productId, quantity) {
+        if (quantity < 1) {
+            mostrarToast('La cantidad debe ser mayor a 0', 'warning');
+            location.reload();
+            return;
+        }
+
+        fetch(`/api/carts/${cartId}/products/${productId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ quantity: Number.parseInt(quantity, 10) })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    mostrarToast('Cantidad actualizada', 'success');
+                    setTimeout(() => location.reload(), 500);
+                } else {
+                    mostrarToast('Error: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                mostrarToast('Error al actualizar la cantidad', 'error');
+            });
+    }
+
+    function eliminarProducto(productId) {
+        if (!confirm('¿Estás seguro de eliminar este producto del carrito?')) {
+            return;
+        }
+
+        fetch(`/api/carts/${cartId}/products/${productId}`, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    mostrarToast('Producto eliminado del carrito', 'success');
+                    setTimeout(() => location.reload(), 500);
+                } else {
+                    mostrarToast('Error: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                mostrarToast('Error al eliminar el producto', 'error');
+            });
+    }
+
+    function vaciarCarrito() {
+        if (!confirm('¿Estás seguro de vaciar todo el carrito?')) {
+            return;
+        }
+
+        fetch(`/api/carts/${cartId}`, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    mostrarToast('Carrito vaciado', 'success');
+                    setTimeout(() => location.reload(), 500);
+                } else {
+                    mostrarToast('Error: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                mostrarToast('Error al vaciar el carrito', 'error');
+            });
+    }
+</script>

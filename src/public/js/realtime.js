@@ -68,9 +68,10 @@ formAddProduct.addEventListener("submit", async (e) => {
             title: formData.get("title"),
             description: formData.get("description"),
             price: parseFloat(formData.get("price")),
-            stock: parseInt(formData.get("stock")),
+            stock: Number.parseInt(formData.get("stock"), 10),
             code: formData.get("code"),
             category: formData.get("category"),
+            status: formData.get("status") === "on",
             thumbnails: imageUrl ? [imageUrl] : [],
         };
 
@@ -91,16 +92,17 @@ formDeleteProduct.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const formData = new FormData(formDeleteProduct);
-    const productId = parseInt(formData.get("productId"));
+    const productId = formData.get("productId").trim();
 
-    if (productId && productId > 0) {
+    // Validar que sea un ObjectId válido (24 caracteres hexadecimales)
+    if (productId && productId.length === 24 && /^[0-9a-fA-F]{24}$/.test(productId)) {
         // Enviar ID al servidor por WebSocket
         socket.emit("deleteProduct", productId);
 
         // Limpiar formulario
         formDeleteProduct.reset();
     } else {
-        showMessage("Por favor ingresa un ID válido", "error");
+        showMessage("Por favor ingresa un ID válido (ObjectId de 24 caracteres)", "error");
     }
 });
 
@@ -111,7 +113,7 @@ socket.on("productAdded", (product) => {
     // Crear nueva fila en la tabla
     const newRow = document.createElement("tr");
     newRow.innerHTML = `
-        <th scope="row">${product.id}</th>
+        <th scope="row"><small>${product._id || product.id}</small></th>
         <td><img src="${product.thumbnails && product.thumbnails[0]
             ? product.thumbnails[0]
             : "https://via.placeholder.com/100x100?text=Sin+Imagen"
@@ -140,8 +142,11 @@ socket.on("productDeleted", (productId) => {
     const rows = productsTable.querySelectorAll("tr");
     rows.forEach((row) => {
         const idCell = row.querySelector("th");
-        if (idCell && parseInt(idCell.textContent) === productId) {
-            row.remove();
+        if (idCell) {
+            const cellText = idCell.textContent.trim();
+            if (cellText === productId) {
+                row.remove();
+            }
         }
     });
 
@@ -155,29 +160,15 @@ socket.on("error", (error) => {
     showMessage(error.message, "error");
 });
 
-// Función para mostrar mensajes
+// Función para mostrar mensajes (usando toasts)
 function showMessage(message, type) {
-    // Crear elemento de mensaje
-    const messageDiv = document.createElement("div");
-    messageDiv.className = `alert alert-${type === "success" ? "success" : "danger"
-        } alert-dismissible fade show position-fixed`;
-    messageDiv.style.top = "20px";
-    messageDiv.style.right = "20px";
-    messageDiv.style.zIndex = "9999";
-    messageDiv.innerHTML = `
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
-
-    // Agregar al body
-    document.body.appendChild(messageDiv);
-
-    // Remover después de 3 segundos
-    setTimeout(() => {
-        if (messageDiv.parentNode) {
-            messageDiv.parentNode.removeChild(messageDiv);
-        }
-    }, 3000);
+    if (typeof mostrarToast === 'function') {
+        // Usar la función global de toasts si está disponible
+        mostrarToast(message, type === "success" ? "success" : "error");
+    } else {
+        // Fallback si no está disponible
+        alert(message);
+    }
 }
 
 // Mostrar mensaje de conexión

@@ -1,37 +1,299 @@
 <h1>Bienvenido a la tienda online</h1>
 <hr>
 
-<div class="row mt-5">
-    <div class="col-12">
-        {{!-- Listar Productos --}}
-        <h3 class="pb-3">Listado de Productos</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Imagen</th>
-                    <th scope="col">Título</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Código</th>
-                    <th scope="col">Categoría</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each productos}}
-                    <tr>
-                        <th scope="row">{{id}}</th>
-                        <td><img src="{{#if thumbnails}}{{thumbnails.[0]}}{{/if}}" alt="{{title}}" width="100" class="img-thumbnail rounded"></td>
-                        <td>{{title}}</td>
-                        <td>{{description}}</td>
-                        <td>{{price}}</td>
-                        <td>{{stock}}</td>
-                        <td>{{code}}</td>
-                        <td>{{category}}</td>
-                    </tr>
-                {{/each}}
-            </tbody>
-        </table>
+<div class="container">
+    <div class="row row-cols-4 mb-4 mt-4">
+        <div class="col">
+            <label for="searchType">Buscar por:</label>
+            <select id="searchType" class="form-select">
+                <option value="">Seleccionar...</option>
+                <option value="category" {{#if searchCategory}}selected{{/if}}>Categoría</option>
+                <option value="status" {{#if searchStatus}}selected{{/if}}>Disponibilidad</option>
+            </select>
+        </div>
+        <div class="col">
+            <label for="searchInput">Valor:</label>
+            <input id="searchInput" class="form-control" type="text" placeholder="Ingresa el valor a buscar..."
+                value="{{searchValue}}">
+        </div>
+        <div class="col">
+            <label for="sortSelect">Ordenar por:</label>
+            <select id="sortSelect" class="form-select" aria-label="Ordenar por precio">
+                <option value="">Sin ordenar</option>
+                <option value="asc" {{#if sortAsc}}selected{{/if}}>Precio menor a mayor</option>
+                <option value="desc" {{#if sortDesc}}selected{{/if}}>Precio mayor a menor</option>
+            </select>
+        </div>
+        <div class="col">
+            <label for="limitSelect">Productos por página:</label>
+            <select id="limitSelect" class="form-select" aria-label="Productos por página">
+                <option value="10" {{#if limit10}}selected{{/if}}>10</option>
+                <option value="20" {{#if limit20}}selected{{/if}}>20</option>
+                <option value="50" {{#if limit50}}selected{{/if}}>50</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-12 text-end">
+            <button class="btn btn-primary" onclick="buscar()">Buscar</button>
+            <button class="btn btn-secondary" onclick="limpiarBusqueda()">Limpiar</button>
+        </div>
+    </div>
+    <div class="row row-cols-4 text-center">
+        {{#each productos}}
+        <div class="col mb-2">
+            <div class="card">
+                <img src="{{#if thumbnails}}{{thumbnails.[0]}}{{/if}}" class="card-img-top" alt="{{title}}">
+                <div class="card-body">
+                    <h5 class="card-title">{{title}}</h5>
+                    <p class="card-text">${{price}}</p>
+                    <div>
+                        <span class="badge rounded-pill text-bg-info">{{category}}</span>
+                    </div>
+                    <div class="pt-2">
+                        <button class="btn btn-primary" onclick="agregarAlCarrito('{{_id}}')">Agregar al
+                            carrito</button>
+                        <a href="/products/{{_id}}" class="btn btn-secondary">Ver detalle</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="row justify-content-center align-content-center pt-3">
+        <div class="col-left">
+            <small class="pb-3">Total de productos: {{totalDocs}}</small>
+        </div>
+        <div class="col-auto">
+            <nav aria-label="Page navigation example mt-4 mx-auto text-center">
+                <ul class="pagination">
+                    {{#if hasPrevPage}}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="/?page={{prevPage}}&limit={{limit}}{{#if sort}}&sort={{sort}}{{/if}}{{#if searchType}}&searchType={{searchType}}&searchValue={{searchValue}}{{/if}}">Página
+                            Anterior</a>
+                    </li>
+                    {{/if}}
+
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{page}} de {{totalPages}}</a>
+                    </li>
+                    {{#if hasNextPage}}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="/?page={{nextPage}}&limit={{limit}}{{#if sort}}&sort={{sort}}{{/if}}{{#if searchType}}&searchType={{searchType}}&searchValue={{searchValue}}{{/if}}">Página
+                            Siguiente</a>
+                    </li>
+                    {{/if}}
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
+
+<script>
+    function construirUrl(page = 1) {
+        const limit = document.getElementById('limitSelect').value;
+        const sort = document.getElementById('sortSelect').value;
+        const searchType = document.getElementById('searchType').value;
+        const searchValue = document.getElementById('searchInput').value;
+
+        let url = '/?page=' + page;
+        if (limit && limit !== '10') {
+            url += '&limit=' + limit;
+        }
+        if (sort) {
+            url += '&sort=' + sort;
+        }
+        if (searchType && searchValue) {
+            url += '&searchType=' + encodeURIComponent(searchType);
+            url += '&searchValue=' + encodeURIComponent(searchValue);
+        }
+
+        return url;
+    }
+
+    function buscar() {
+        const searchType = document.getElementById('searchType').value;
+        const searchValue = document.getElementById('searchInput').value;
+
+        if (searchType && !searchValue) {
+            mostrarToast('Por favor ingresa un valor para buscar', 'warning');
+            return;
+        }
+
+        if (!searchType && searchValue) {
+            mostrarToast('Por favor selecciona el tipo de búsqueda', 'warning');
+            return;
+        }
+
+        window.location.href = construirUrl(1);
+    }
+
+    function limpiarBusqueda() {
+        document.getElementById('searchType').value = '';
+        document.getElementById('searchInput').value = '';
+        window.location.href = '/?page=1';
+    }
+
+    document.getElementById('sortSelect').addEventListener('change', function () {
+        window.location.href = construirUrl(1);
+    });
+
+    document.getElementById('limitSelect').addEventListener('change', function () {
+        window.location.href = construirUrl(1);
+    });
+
+    document.getElementById('searchType').addEventListener('change', function () {
+        const searchInput = document.getElementById('searchInput');
+        const tipo = this.value;
+
+        if (tipo === 'status') {
+            searchInput.placeholder = 'Ej: true, false, disponible';
+        } else if (tipo === 'category') {
+            searchInput.placeholder = 'Ej: Tecnologia, Ropa';
+        } else {
+            searchInput.placeholder = 'Ingresa el valor a buscar...';
+        }
+    });
+
+    document.getElementById('searchInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            buscar();
+        }
+    });
+
+    async function agregarAlCarrito(productId) {
+        try {
+            const response = await fetch('/api/carts');
+            const data = await response.json();
+
+            if (data.success && data.data.length > 0) {
+                mostrarModalCarritos(productId, data.data);
+            } else {
+                await crearYAgregar(productId);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarToast('Error al verificar carritos', 'error');
+        }
+    }
+
+    async function crearYAgregar(productId, title = null) {
+        try {
+            const response = await fetch('/api/carts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title })
+            });
+            const data = await response.json();
+            if (data.success) {
+                const cartId = data.data._id;
+                await agregarProductoACarrito(cartId, productId);
+            } else {
+                mostrarToast('Error al crear carrito: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarToast('Error al crear carrito', 'error');
+        }
+    }
+
+    async function agregarProductoACarrito(cartId, productId) {
+        try {
+            const response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                mostrarToast('Producto agregado al carrito', 'success');
+            } else {
+                mostrarToast('Error: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarToast('Error al agregar producto al carrito', 'error');
+        }
+    }
+
+    function mostrarModalCarritos(productId, carritos) {
+        const modalHTML = `
+            <div class="modal fade" id="modalCarritos" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Seleccionar Carrito</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Selecciona un carrito:</label>
+                                <div id="carritosList">
+                                    ${carritos.map(cart => `
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="cartSelect" id="cart${cart._id}" value="${cart._id}">
+                                            <label class="form-check-label" for="cart${cart._id}">
+                                                ${cart.title} (${cart.products.length} productos)
+                                            </label>
+                                        </div>
+                                    `).join('')}
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="cartSelect" id="cartNuevo" value="nuevo">
+                                        <label class="form-check-label" for="cartNuevo">
+                                            Crear nuevo carrito
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="nuevoCarritoDiv" style="display: none;">
+                                <label class="form-label">Nombre del carrito:</label>
+                                <input type="text" class="form-control" id="nuevoCarritoTitle" placeholder="Ej: Carrito de cumpleaños">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="confirmarAgregar('${productId}')">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const modalAnterior = document.getElementById('modalCarritos');
+        if (modalAnterior) {
+            modalAnterior.remove();
+        }
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        const modal = new bootstrap.Modal(document.getElementById('modalCarritos'));
+        modal.show();
+
+        document.getElementById('cartNuevo').addEventListener('change', function () {
+            document.getElementById('nuevoCarritoDiv').style.display = this.checked ? 'block' : 'none';
+        });
+    }
+
+    window.confirmarAgregar = async function (productId) {
+        const selected = document.querySelector('input[name="cartSelect"]:checked');
+        if (!selected) {
+            mostrarToast('Por favor selecciona un carrito', 'warning');
+            return;
+        }
+
+        if (selected.value === 'nuevo') {
+            const title = document.getElementById('nuevoCarritoTitle').value || null;
+            await crearYAgregar(productId, title);
+        } else {
+            await agregarProductoACarrito(selected.value, productId);
+        }
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalCarritos'));
+        modal.hide();
+    };
+</script>
